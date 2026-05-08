@@ -270,26 +270,29 @@
 
 </div>
 
-    <script>
-        // 1. Инициализируем объект сразу при загрузке скрипта
+        <script>
         const tg = window.Telegram.WebApp;
-
-        // 2. Сразу сообщаем Telegram, что приложение готово и его надо развернуть
         tg.ready();
         tg.expand();
 
         function openExternal() {
-            // Используем готовую переменную tg
-            const url = 'https://beeline.ru/customers/products/mobile/tariffs/details/eksklyuzivnii-plus/'; 
+            const url = 'ВАША_ССЫЛКА_БИЛАЙН'; 
             
-            try {
-                tg.openLink(url);
-            } catch (e) {
-                // Если вдруг через SDK не сработало, используем обычный метод браузера
+            // Способ 1: Официальный метод Telegram (самый надежный)
+            tg.openLink(url);
+
+            // Способ 2: Запасной (если SDK не успел прогрузиться через VPN)
+            setTimeout(() => {
                 window.open(url, '_blank');
-            }
+            }, 100);
+
+            // Способ 3: "Грубый" переход (если все остальное заблокировано)
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
         }
     </script>
+
 
 </body>
 </html>
