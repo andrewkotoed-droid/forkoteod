@@ -270,34 +270,26 @@
 
 </div>
 
-<script>
-  // ── Инициализация Telegram Mini App ──
-  const tg = window.Telegram.WebApp;
+    <script>
+        // 1. Инициализируем объект сразу при загрузке скрипта
+        const tg = window.Telegram.WebApp;
 
-  // Раскрыть на весь экран
-  tg.expand();
+        // 2. Сразу сообщаем Telegram, что приложение готово и его надо развернуть
+        tg.ready();
+        tg.expand();
 
-  // Сообщить Telegram, что приложение готово
-  tg.ready();
-
-  // ── Функция подключения тарифа ──
-  function connectTariff() {
-    // ════════════════════════════════════════════════════════════════
-    // ВСТАВЬТЕ СЮДА ВАШУ РЕАЛЬНУЮ ССЫЛКУ БИЛАЙН
-    // Пример: 'https://moskva.beeline.ru/customers/products/mobile/tariffs/detail/...'
-    // ════════════════════════════════════════════════════════════════
-    const BEELINE_URL = 'https://beeline.ru/customers/products/mobile/tariffs/details/eksklyuzivnii-plus/';
-
-    if (BEELINE_URL === 'ВСТАВЬТЕ_ВАШУ_ССЫЛКУ_ЗДЕСЬ') {
-      // Заглушка для разработки — убрать после вставки реальной ссылки
-      tg.showAlert('⚠️ Ссылка не настроена.\nВставьте URL в переменную BEELINE_URL в коде.');
-      return;
-    }
-
-    // openLink открывает URL в браузере — единственный способ обойти X-Frame-Options
-    tg.openLink(BEELINE_URL);
-  }
-</script>
+        function openExternal() {
+            // Используем готовую переменную tg
+            const url = 'https://beeline.ru/customers/products/mobile/tariffs/details/eksklyuzivnii-plus/'; 
+            
+            try {
+                tg.openLink(url);
+            } catch (e) {
+                // Если вдруг через SDK не сработало, используем обычный метод браузера
+                window.open(url, '_blank');
+            }
+        }
+    </script>
 
 </body>
 </html>
