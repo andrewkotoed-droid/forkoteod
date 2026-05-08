@@ -9,19 +9,13 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    /* ─── Telegram theme tokens ─── */
     :root {
-      --tg-bg:        var(--tg-theme-bg-color,       #ffffff);
-      --tg-text:      var(--tg-theme-text-color,      #000000);
-      --tg-hint:      var(--tg-theme-hint-color,      #999999);
-      --tg-link:      var(--tg-theme-link-color,      #2678b6);
-      --tg-btn:       var(--tg-theme-button-color,    #2678b6);
-      --tg-btn-text:  var(--tg-theme-button-text-color, #ffffff);
+      --tg-bg:        var(--tg-theme-bg-color,        #ffffff);
+      --tg-text:      var(--tg-theme-text-color,       #000000);
+      --tg-hint:      var(--tg-theme-hint-color,       #999999);
       --tg-secondary: var(--tg-theme-secondary-bg-color, #f1f1f1);
-
-      /* Beeline brand */
-      --bee-yellow: #FFD600;
-      --bee-black:  #1A1A1A;
+      --bee-yellow:      #FFD600;
+      --bee-black:       #1A1A1A;
       --bee-yellow-glow: rgba(255, 214, 0, 0.45);
     }
 
@@ -37,7 +31,6 @@
       overflow: hidden;
     }
 
-    /* ─── Layout ─── */
     .screen {
       display: flex;
       flex-direction: column;
@@ -45,10 +38,9 @@
       justify-content: center;
       min-height: 100dvh;
       padding: 32px 24px;
-      gap: 0;
     }
 
-    /* ─── Logo badge ─── */
+    /* ── Logo ── */
     .logo-wrap {
       display: flex;
       align-items: center;
@@ -61,13 +53,9 @@
       margin-bottom: 28px;
       animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
+    .logo-wrap svg { width: 56px; height: 56px; }
 
-    .logo-wrap svg {
-      width: 56px;
-      height: 56px;
-    }
-
-    /* ─── Headline ─── */
+    /* ── Text ── */
     .headline {
       font-size: 26px;
       font-weight: 700;
@@ -77,7 +65,6 @@
       margin-bottom: 10px;
       animation: fade-up 0.5s 0.1s ease both;
     }
-
     .sub {
       font-size: 15px;
       color: var(--tg-hint);
@@ -88,7 +75,7 @@
       animation: fade-up 0.5s 0.2s ease both;
     }
 
-    /* ─── Tariff card ─── */
+    /* ── Tariff card ── */
     .card {
       width: 100%;
       max-width: 340px;
@@ -98,33 +85,24 @@
       margin-bottom: 24px;
       animation: fade-up 0.5s 0.3s ease both;
     }
-
     .card-row {
       display: flex;
       align-items: baseline;
       gap: 6px;
       margin-bottom: 14px;
     }
-
     .price {
       font-size: 36px;
       font-weight: 800;
       color: var(--tg-text);
       letter-spacing: -1px;
     }
-
     .price-unit {
       font-size: 15px;
       color: var(--tg-hint);
       font-weight: 500;
     }
-
-    .features {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .features { display: flex; flex-direction: column; gap: 8px; }
     .feature {
       display: flex;
       align-items: center;
@@ -132,7 +110,6 @@
       font-size: 14px;
       color: var(--tg-text);
     }
-
     .feature-dot {
       width: 7px;
       height: 7px;
@@ -142,8 +119,10 @@
       box-shadow: 0 0 6px var(--bee-yellow-glow);
     }
 
-    /* ─── CTA Button (Beeline colors) ─── */
+    /* ── CTA Button ── */
     .cta-btn {
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -154,39 +133,54 @@
       border-radius: 16px;
       border: none;
       cursor: pointer;
-
       background: var(--bee-yellow);
       color: var(--bee-black);
       font-size: 17px;
       font-weight: 700;
       letter-spacing: -0.2px;
-
-      box-shadow:
-        0 4px 24px var(--bee-yellow-glow),
-        0 1px 0 rgba(255,255,255,0.25) inset;
-
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      box-shadow: 0 4px 24px var(--bee-yellow-glow), 0 1px 0 rgba(255,255,255,0.25) inset;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, opacity 0.2s ease;
       animation: fade-up 0.5s 0.4s ease both;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
-
     .cta-btn:active {
       transform: scale(0.97);
       box-shadow: 0 2px 10px var(--bee-yellow-glow);
       filter: brightness(0.95);
     }
+    .cta-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      border-radius: inherit;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      background: rgba(255,255,255,0.25);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .cta-btn:active::after { opacity: 1; transition: opacity 0s; }
 
-    .cta-btn svg {
+    /* spinner */
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(26,26,26,0.25);
+      border-top-color: var(--bee-black);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
       flex-shrink: 0;
     }
+    .cta-btn.loading .spinner  { display: block; }
+    .cta-btn.loading .btn-icon { display: none; }
 
-    .cta-btn .btn-arrow {
-      margin-left: auto;
-      opacity: 0.6;
-    }
-
-    /* ─── Footer note ─── */
     .note {
       margin-top: 20px;
       font-size: 12px;
@@ -197,41 +191,24 @@
       animation: fade-up 0.5s 0.5s ease both;
     }
 
-    /* ─── Animations ─── */
     @keyframes pop-in {
       from { opacity: 0; transform: scale(0.7); }
       to   { opacity: 1; transform: scale(1); }
     }
-
     @keyframes fade-up {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    /* Ripple on tap */
-    .cta-btn::after {
-      content: '';
-      position: absolute;
-      border-radius: inherit;
-      width: 100%;
-      height: 100%;
-      top: 0; left: 0;
-      background: rgba(255,255,255,0.25);
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
-    .cta-btn { position: relative; overflow: hidden; }
-    .cta-btn:active::after { opacity: 1; transition: opacity 0s; }
   </style>
 </head>
 <body>
 
 <div class="screen">
 
-  <!-- Логотип Билайн -->
   <div class="logo-wrap" aria-hidden="true">
-    <!-- Упрощённый логотип Билайн (полосатый круг) -->
     <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="28" cy="28" r="28" fill="#1A1A1A"/>
       <path d="M14 20 Q28 14 42 20" stroke="#FFD600" stroke-width="4.5" stroke-linecap="round" fill="none"/>
@@ -243,7 +220,6 @@
   <h1 class="headline">Тариф Билайн</h1>
   <p class="sub">Выгодное предложение специально для вас — подключите прямо сейчас</p>
 
-  <!-- Карточка с деталями тарифа -->
   <div class="card">
     <div class="card-row">
       <span class="price">300–350 ₽</span>
@@ -256,43 +232,104 @@
     </div>
   </div>
 
-  <!-- ────────────────────────────────────────────────────────────────
-       ВСТАВЬТЕ ВАШУ ССЫЛКУ НИЖЕ в параметр openLink('...')
-       ──────────────────────────────────────────────────────────────── -->
-  <button class="cta-btn" onclick="connectTariff()">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <button class="cta-btn" id="connectBtn" onclick="connectTariff()">
+    <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 12h14M12 5l7 7-7 7"/>
     </svg>
-    Подключить тариф
+    <div class="spinner"></div>
+    <span id="btnText">Подключить тариф</span>
   </button>
 
   <p class="note">Нажимая кнопку, вы перейдёте на официальный сайт Билайн для оформления</p>
 
 </div>
 
-        <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+<script>
+  // ── Ссылка назначения ────────────────────────────────────────
+  const BEELINE_URL = 'https://beeline.ru/customers/products/mobile/tariffs/details/eksklyuzivnii-plus/';
 
-        function openExternal() {
-            const url = 'ВАША_ССЫЛКА_БИЛАЙН'; 
-            
-            // Способ 1: Официальный метод Telegram (самый надежный)
-            tg.openLink(url);
+  // ── Инициализация SDK ────────────────────────────────────────
+  // Безопасная проверка: SDK может не загрузиться при VPN/proxy
+  const tg = (window.Telegram && window.Telegram.WebApp) || null;
+  if (tg) {
+    tg.ready();   // сообщаем Telegram, что интерфейс отрисован
+    tg.expand();  // раскрываем на весь экран
+  }
 
-            // Способ 2: Запасной (если SDK не успел прогрузиться через VPN)
-            setTimeout(() => {
-                window.open(url, '_blank');
-            }, 100);
+  // ── Многоуровневое открытие ссылки ───────────────────────────
+  //
+  //  Уровень 1 — tg.openLink()
+  //    Официальный метод SDK. Telegram передаёт URL нативному
+  //    обработчику системы (открывает браузер по умолчанию).
+  //    Работает надёжнее всего, когда SDK загружен.
+  //
+  //  Уровень 2 — невидимый <a target="_blank"> + .click()
+  //    Браузер считает клик «доверенным» (trusted event), поэтому
+  //    не блокирует его как popup. Элемент вставляется в DOM,
+  //    кликается синхронно, затем удаляется.
+  //
+  //  Уровень 3 — window.location.replace()
+  //    Последний резерв. Перенаправляет текущую вкладку.
+  //    replace() не засоряет историю браузера.
+  //
+  function openUrlSafely(url) {
 
-            // Способ 3: "Грубый" переход (если все остальное заблокировано)
-            setTimeout(() => {
-                window.location.href = url;
-            }, 300);
-        }
-    </script>
+    // Уровень 1
+    if (tg && typeof tg.openLink === 'function') {
+      try {
+        tg.openLink(url);
+        return;
+      } catch (e) {
+        console.warn('[L1] tg.openLink failed:', e);
+      }
+    }
 
+    // Уровень 2
+    try {
+      const a = document.createElement('a');
+      a.href        = url;
+      a.target      = '_blank';
+      a.rel         = 'noopener noreferrer';
+      // Элемент обязан присутствовать в DOM — иначе Firefox игнорирует клик
+      a.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { try { document.body.removeChild(a); } catch(_){} }, 500);
+      return;
+    } catch (e) {
+      console.warn('[L2] anchor click failed:', e);
+    }
+
+    // Уровень 3
+    try {
+      window.location.replace(url);
+    } catch (e) {
+      console.warn('[L3] location.replace failed:', e);
+    }
+  }
+
+  // ── Обработчик кнопки ────────────────────────────────────────
+  function connectTariff() {
+    const btn     = document.getElementById('connectBtn');
+    const btnText = document.getElementById('btnText');
+
+    // Визуальный отклик — переводим в состояние «загрузка»
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btnText.textContent = 'Открываем...';
+
+    // Открываем ссылку (синхронно, внутри trusted event — важно!)
+    openUrlSafely(BEELINE_URL);
+
+    // Восстанавливаем кнопку через 3 с (пользователь мог вернуться)
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      btnText.textContent = 'Подключить тариф';
+    }, 3000);
+  }
+</script>
 
 </body>
 </html>
